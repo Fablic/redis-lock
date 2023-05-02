@@ -35,7 +35,7 @@ class Redis
       expiration_value = lock_expiration(timeout)
       attempt_counter = 0
       while attempt_counter < max_attempts
-        if self.setnx(current_lock_key, expiration_value)
+        if self.set(current_lock_key, expiration_value, nx: true, ex: timeout)
           return true
         else
           current_lock = self.get(current_lock_key)
